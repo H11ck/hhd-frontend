@@ -17,7 +17,7 @@
     <div id="main">
         <div id="header" class="one-edge-shadow">
             <a id="logo" href="/">
-                <img src="/assets/img/hhd-logo.png" alt="" class="logo-img">
+                <img src="./assets/img/hhd-logo.png" alt="" class="logo-img">
             </a>
             <!-- Begin Nav -->
             <ul id="nav">
@@ -43,12 +43,17 @@
             </div> -->
             <!-- Begin Search button -->
         </div>
-        <div class="content">
+        <div id="content">
             <div class="editor">
                 <input type="text" class="title" placeholder="Tiêu đề">
                 <textarea name="" id="mark-down-editor" cols="30" rows="10">
                     ## Create your mark down 
                 </textarea>
+                <button class="create-post">Create Post</button>
+            </div>
+            <div class="preview">
+                <p class="preview-title">Preview</p>
+                <div class="preview-editor"></div>
             </div>
         </div>
     </div>
@@ -84,7 +89,7 @@
             },
             placeholder: "Type here...",
             previewRender: function (plainText) {
-                console.log(plainText);
+                // console.log(plainText);
                 return customMarkdownParser(plainText); // Returns HTML from a custom parser
             },
             previewRender: function (plainText, preview) { // Async method
@@ -120,14 +125,20 @@
         });
 
         simplemde.codemirror.on("change", function () {
-            // console.log(simplemde.value());
+            console.log(simplemde.value());
+            let innerHtml = marked.parse(simplemde.value());
+            customPreview(innerHtml);
         });
 
         function customMarkdownParser(text){
-            
             let innerHtml = marked.parse(text);
-            console.log(innerHtml)
             return innerHtml
+        }
+
+        function customPreview (html){
+            let preview = document.querySelector(".preview-editor");
+            preview.innerHTML = html;
+            // console.log(html)
         }
     </script>
 
